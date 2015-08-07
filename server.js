@@ -4,21 +4,6 @@ var path = require('path');
 var mime = require('mime');
 var cache = {};
 
-var server = http.createServer(function(request, response) {
-  var filePath = false;
-  if (request.url == '/') {
-    filePath = 'public/index.html';
-  } else {
-    filePath = 'public' + request.url;
-  }
-  var absPath = './' + filePath;
-  serverStatic(response, cache, absPath);
-});
-
-server.listen(4444, function(){
-  console.log('Server listening port 4444.');
-});
-
 function send404(response){
   response.writeHead(404,{'Content-Type':'text/plain'});
   response.write('Error 404 response not found');
@@ -28,7 +13,7 @@ function send404(response){
 function sendFile(response, filePath, fileContents) {
   response.writeHead(
     200,
-    {"content-type":mime.lockup(path.basename(filePath))}
+    {"content-type": mime.lookup(path.basename(filePath))}
   );
   response.end(fileContents);
 }
@@ -54,3 +39,21 @@ function serverStatic(response, cache, absPath) {
   }
 
 }
+
+var server = http.createServer(function(request, response) {
+  var filePath = false;
+  if (request.url == '/') {
+    filePath = 'public/index.html';
+  } else {
+    filePath = 'public' + request.url;
+  }
+  var absPath = './' + filePath;
+  serverStatic(response, cache, absPath);
+});
+
+server.listen(4444, function(){
+  console.log('Server listening port 4444.');
+});
+
+var chatServer = require('./lib/chat_server');
+chatServer.listen(server);
