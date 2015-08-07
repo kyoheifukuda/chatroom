@@ -4,7 +4,7 @@
   "description":"Minimalist multiroom chat server",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/kyouheifukuda/chatroom.git"
   },
   "dependencies":{
     "socket.io":"^0.9.6",
